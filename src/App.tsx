@@ -17,6 +17,8 @@ export const App = () => {
     { id: 2, text: '장보기', completed: false },
   ]);
 
+  const [userInput, setUserInput] = useState<string>('');
+
   const handleCheckboxChange = (id: number) => {
     setTodos((prevTodos) => {
       return prevTodos.map((todo) => {
@@ -28,13 +30,42 @@ export const App = () => {
     });
   };
 
+  const handleClick = () => {
+    const newTodo: item = { id: Date.now(), text: userInput, completed: false };
+    if (userInput.trim() !== '') {
+      setTodos([...todos, newTodo]);
+    }
+    setUserInput('');
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      //유효한 input값만 추가되도록
+      handleClick();
+    }
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserInput(event.currentTarget.value);
+  };
+
   return (
     <Background>
       <Todo>
         <TodoHeader>
           <Title>My Todo List</Title>
-          <TodoInput type='text' placeholder='Add a new goal' />
-          <TodoAddBtn type='button'>+</TodoAddBtn>
+          <TodoInput
+            value={userInput}
+            type='text'
+            placeholder='Add a new goal'
+            onKeyDown={(event) => handleKeyDown(event)}
+            onChange={(event) => {
+              handleInputChange(event);
+            }}
+          />
+          <TodoAddBtn type='button' onClick={handleClick}>
+            +
+          </TodoAddBtn>
         </TodoHeader>
 
         <ul>
