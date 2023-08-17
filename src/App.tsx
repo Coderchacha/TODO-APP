@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface item {
   id: number;
@@ -280,11 +280,26 @@ const TodoInput = styled.input`
   margin-right: 5px;
 `;
 
+const Bigger = keyframes`
+from {
+  transform: scale(1)
+}
+to {
+  transform: scale(1.2)
+}
+`;
+
 const TodoAddBtn = styled.button`
   background-color: #0ba5be;
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0px 0px 50px -3px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: black;
+    color: white;
+    animation: ${Bigger} 0.5s linear;
+  }
 `;
 
 const TodoList = styled.li`
@@ -316,6 +331,10 @@ const TodoListCheckBox = styled.div<todoProps>`
   display: inline-block;
   vertical-align: middle;
   margin-right: 8px;
+
+  &:hover {
+    border: 2px solid #007bff;
+  }
 `;
 
 const TodoListLabel = styled.label<{ completed: boolean }>`
@@ -323,7 +342,11 @@ const TodoListLabel = styled.label<{ completed: boolean }>`
   cursor: pointer;
   ${(props) => props.completed && 'text-decoration: line-through;'};
 `;
-const TodoListDeleteBtn = styled.button``;
+const TodoListDeleteBtn = styled.button`
+  &:hover {
+    color: red;
+  }
+`;
 
 const TodoListDeleteBtnSvg = styled.svg`
   width: 20px;
