@@ -30,8 +30,13 @@ export const App = () => {
     });
   };
 
-  const handleClick = () => {
-    const newTodo: item = { id: Date.now(), text: userInput, completed: false };
+  const addTodo = () => {
+    const newTodo: item = {
+      id: Date.now(),
+      text: userInput,
+      completed: false,
+    };
+
     if (userInput.trim() !== '') {
       setTodos([...todos, newTodo]);
     }
@@ -40,13 +45,18 @@ export const App = () => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      //유효한 input값만 추가되도록
-      handleClick();
+      addTodo();
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(event.currentTarget.value);
+  };
+
+  const deleteTodo = (id: number) => {
+    const filteredTodos = todos.filter((todo) => todo.id !== id);
+
+    setTodos(filteredTodos);
   };
 
   return (
@@ -63,7 +73,7 @@ export const App = () => {
               handleInputChange(event);
             }}
           />
-          <TodoAddBtn type='button' onClick={handleClick}>
+          <TodoAddBtn type='button' onClick={addTodo}>
             +
           </TodoAddBtn>
         </TodoHeader>
@@ -84,7 +94,11 @@ export const App = () => {
                     {todo.text}
                   </TodoListLabel>
                 </TodoTextWrapper>
-                <TodoListDeleteBtn>
+                <TodoListDeleteBtn
+                  onClick={() => {
+                    deleteTodo(todo.id);
+                  }}
+                >
                   <TodoListDeleteBtnSvg
                     xmlns='http://www.w3.org/2000/svg'
                     viewBox='0 0 24 24'
