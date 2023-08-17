@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 interface item {
   id: number;
   text: string;
   completed: boolean;
+}
+
+interface time {
+  year: string;
+  month: string;
+  day: string;
+  weekday: string;
 }
 
 interface todoProps {
@@ -18,6 +25,22 @@ export const App = () => {
   ]);
 
   const [userInput, setUserInput] = useState<string>('');
+
+  const [timer, setTimer] = useState<time[]>([]);
+
+  const currentTimer = () => {
+    const date = new Date();
+    const year = String(date.getFullYear()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const weekday = date.toString().slice(0, 3);
+
+    setTimer([{ year, month, day, weekday }]);
+  };
+
+  useEffect(() => {
+    currentTimer();
+  }, []);
 
   const handleCheckboxChange = (id: number) => {
     setTodos((prevTodos) => {
@@ -62,6 +85,18 @@ export const App = () => {
   return (
     <Background>
       <Todo>
+        <DateWrapper>
+          <DateBox>
+            <DateDay>12</DateDay>
+            <DateMonthYear>
+              <div>08</div>
+              <div>2023</div>
+            </DateMonthYear>
+          </DateBox>
+
+          <WeekdayBox>화요일</WeekdayBox>
+        </DateWrapper>
+
         <TodoHeader>
           <Title>My Todo List</Title>
           <TodoInput
@@ -191,6 +226,31 @@ const TodoHeader = styled.div`
   margin-bottom: 20px;
 `;
 
+const DateWrapper = styled.div`
+  width: 20rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const DateBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const DateDay = styled.div`
+  font-size: 25px;
+  margin-right: 5px;
+`;
+
+const DateMonthYear = styled.div``;
+
+const WeekdayBox = styled.div`
+  font-size: 15px;
+`;
+
 const Title = styled.h1`
   font-size: 20px;
   margin-bottom: 10px;
@@ -205,9 +265,9 @@ const TodoEmptyAlert = styled.div`
   font-size: 15px;
   color: #fff;
   background-color: #cfcbc8;
-  padding: 20px;
+  padding: 20px 10px;
   border-radius: 5px;
-  box-shadow: 26px 25px 23px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 8px 10px 23px 0px rgba(0, 0, 0, 0.1);
 `;
 
 const TodoInput = styled.input`
