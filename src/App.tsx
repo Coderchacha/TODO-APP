@@ -85,17 +85,21 @@ export const App = () => {
   return (
     <Background>
       <Todo>
-        <DateWrapper>
-          <DateBox>
-            <DateDay>12</DateDay>
-            <DateMonthYear>
-              <div>08</div>
-              <div>2023</div>
-            </DateMonthYear>
-          </DateBox>
+        {timer.map((time) => {
+          return (
+            <DateWrapper>
+              <DateBox>
+                <DateDay>{time.day}</DateDay>
+                <DateMonthYear>
+                  <div>{time.month}</div>
+                  <div>{time.year}</div>
+                </DateMonthYear>
+              </DateBox>
 
-          <WeekdayBox>화요일</WeekdayBox>
-        </DateWrapper>
+              <WeekdayBox>{time.weekday}</WeekdayBox>
+            </DateWrapper>
+          );
+        })}
 
         <TodoHeader>
           <Title>My Todo List</Title>
